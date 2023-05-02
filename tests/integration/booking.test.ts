@@ -200,7 +200,7 @@ describe('put /booking', () => {
         .send({ roomId: room.id });
       expect(response.status).toBe(httpStatus.FORBIDDEN);
     });
-    it('Should respond with status 200 with RoomId', async () => {
+    it('Should respond with status 200 with BookingId', async () => {
       const user = await createUser();
       const token = await generateValidToken(user);
       const enrollment = await createEnrollmentWithAddress(user);
@@ -217,7 +217,7 @@ describe('put /booking', () => {
       expect(response.status).toBe(httpStatus.OK);
       expect(response.body).toEqual(
         expect.objectContaining({
-          roomId: expect.any(Number),
+          bookingId: expect.any(Number),
         }),
       );
     });

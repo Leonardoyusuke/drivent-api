@@ -57,6 +57,18 @@ async function ticketProcessPayment(ticketId: number) {
     },
   });
 }
+async function verifyTicketType(userId: number) {
+  return prisma.ticket.findFirst({
+    where: {
+      Enrollment: {
+        userId,
+      },
+    },
+    include: {
+      TicketType: true,
+    },
+  });
+}
 
 export default {
   findTicketTypes,
@@ -65,4 +77,5 @@ export default {
   findTickeyById,
   findTickeWithTypeById,
   ticketProcessPayment,
+  verifyTicketType,
 };
