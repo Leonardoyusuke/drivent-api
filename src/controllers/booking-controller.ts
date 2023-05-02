@@ -28,8 +28,9 @@ export async function postBooking(req: AuthenticatedRequest, res: Response, next
 export async function putBooking(req: AuthenticatedRequest, res: Response, next: NextFunction) {
   const { bookingId } = req.params;
   const { roomId } = req.body;
+  const { userId } = req;
   try {
-    const newBooking = await bookingService.putBooking(Number(bookingId), roomId);
+    const newBooking = await bookingService.putBooking(Number(bookingId), roomId, userId);
     return res.status(httpStatus.OK).send(newBooking);
   } catch (error) {
     if (error.name === 'ForbiddenError') return res.sendStatus(httpStatus.FORBIDDEN);

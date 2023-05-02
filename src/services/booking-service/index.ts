@@ -21,9 +21,17 @@ async function postBooking(userId: number, roomId: number) {
   const roomCapacity = await bookingRepository.checkCapacity(roomId);
   if (roomCapacity >= room.capacity) throw forbiddenError();
   const booking = await bookingRepository.postBooking(userId, roomId);
-  return { bookingId: booking.roomId };
+  return { bookingId: booking.id };
 }
-async function putBooking(bookingId: number, roomId: number) {
+async function putBooking(bookingId: number, roomId: number, userId: number) {
+  const ticketType = await ticketsRepository.verifyTicketType(userId);
+  if (
+    ticketType.status === 'RESERVED' ||
+    ticketType.TicketType.isRemote === true ||
+    ticketType.TicketType.includesHotel === false
+  )
+    throw forbiddenError();
+
   const checkBooking = await bookingRepository.checkBooking(bookingId);
   if (!checkBooking) throw notFoundError();
   const room = await bookingRepository.checkRoom(roomId);
